@@ -47,8 +47,6 @@ def getboard(a, b):
     print()
     print("-----------------")
 
-def printWinner(player):
-    print("THE Winner IS: ",player)
 
 def playTurn(player,other):
     print("******************************************************")
@@ -75,33 +73,24 @@ def playTurn(player,other):
         print("{} has moved to spot: ".format(player), players[player])
         return False
 
+
 def Game():
     gamewon = False
-    # playera = np.zeros(9)
-    # safe spot 0, winning spot is 8
     turn = 0
     print("Both players start on space 0 and must race to reach 8 with rolls of 1-3 to win!!")
     input("Press Enter To START")
     print("******************** Game start: *********************")
 
     while (not gamewon):
-
-    # safe spot at 0
-    # if either reaches 8 they win
-    # if they land on the same spot the first player goes back to 0
-    # if they land 'above' 8 then their turn is skipped and dice =2/3
-    # they land on a spot like normal
         if (turn % 2 == 0):
             player = 'Player A'
             other =  'Player B'
             gamewon = playTurn(player,other)
-            ####
             getboard(players[player], players[other])
         else:
             player = 'Player B'
             other =  'Player A'
             gamewon = playTurn(player,other)
-            ####
             getboard(players[other], players[player])
 
         turn = turn + 1
