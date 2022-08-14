@@ -1,6 +1,5 @@
 import random
-
-
+players = {'Player A': 0,'Player B':0}
 def getboard(a, b):
     print("-----------------")
     # top row
@@ -48,74 +47,65 @@ def getboard(a, b):
     print()
     print("-----------------")
 
+def printWinner(player):
+    print("THE Winner IS: ",player)
 
-gamewon = False
-# playera = np.zeros(9)
-# safe spot 0, winning spot is 8
-playera = 0
-playerb = 0
-turn = 0
-winner = ""
-print("Both players start on space 0 and must race to reach 8 with rolls of 1-3 to win!!")
-input("Press Enter To START")
-print("******************** Game start: *********************")
+def playTurn(player,other):
+    print("******************************************************")
+    print("{}'s Turn".format(player))
+    input("Press Enter key to roll a number from 1-3:")
+    roll = roll = random.randint(1, 3)
+    print("{} rolled ".format(player), roll)
 
-while (not gamewon):
+    if (players[player] + roll == 8):
+        players[player]  = players[player] + roll
+        print("OUR WINNER IS: ".format(player))
+        return True
+    elif (players[other] == (players[player] + roll) and players[other] != 0):
+        players[other] = 0
+        players[player] = players[player] + roll
+        print("OH NO!! {} has gone back to the safespace (0)".format(other))
+        print("{} has moved to spot:".format(player), players[player])
+        return False
+    elif (players[player] + roll > 8):
+        print("{} remains at spot: ".format(player), players[player])
+        return False
+    else:
+        players[player] = players[player] + roll
+        print("{} has moved to spot: ".format(player), players[player])
+        return False
+
+def Game():
+    gamewon = False
+    # playera = np.zeros(9)
+    # safe spot 0, winning spot is 8
+    turn = 0
+    print("Both players start on space 0 and must race to reach 8 with rolls of 1-3 to win!!")
+    input("Press Enter To START")
+    print("******************** Game start: *********************")
+
+    while (not gamewon):
 
     # safe spot at 0
     # if either reaches 8 they win
     # if they land on the same spot the first player goes back to 0
     # if they land 'above' 8 then their turn is skipped and dice =2/3
     # they land on a spot like normal
-    if (turn % 2 == 0):
-        print("******************************************************")
-        print("Player A's Turn")
-        input("Press Enter key to roll a number from 1-3:")
-        roll = roll = random.randint(1, 3)
-        print("Player A rolled ", roll)
-
-        if (playera + roll == 8):
-            playera = playera + roll
-            gamewon = True
-            winner = "Player A"
-        elif (playerb == (playera + roll) and playerb != 0):
-            playerb = 0
-            playera = playera + roll
-            print("OH NO!! player B has gone back to the safespace (0)")
-            print("Player A has moved to spot:", playera)
-        elif (playera + roll > 8):
-            print("Player A remains at spot: ", playera)
+        if (turn % 2 == 0):
+            player = 'Player A'
+            other =  'Player B'
+            gamewon = playTurn(player,other)
+            ####
+            getboard(players[player], players[other])
         else:
-            playera = playera + roll
-            print("Player A has moved to spot: ", playera)
-        getboard(playera, playerb)
-    else:
-        print("******************************************************")
-        print("Player B's Turn")
-        input("Press enter key to roll a number from 1-3:")
-        roll = roll = random.randint(1, 3)
-        # player b's turn
-        print("Player B rolled ", roll)
-        if (playerb + roll == 8):
-            playerb = playerb + roll
-            gamewon = True
-            winner = "Player B"
-        elif (playera == (playerb + roll) and playera != 0):
-            playera = 0
-            playerb = playerb + roll
-            print("OH NO!! player A has gone back to the safespace (0)")
-            print("Player B has moved to spot:", playerb)
-        elif (playerb + roll > 8):
-            print("Player B remains at spot ", playerb)
-        else:
-            playerb = playerb + roll
-            print("Player B has moved to spot:", playerb)
-        getboard(playera, playerb)
+            player = 'Player B'
+            other =  'Player A'
+            gamewon = playTurn(player,other)
+            ####
+            getboard(players[other], players[player])
 
-    turn = turn + 1
-
-print("The Winner is: ", winner, "!!!!")
-
+        turn = turn + 1
+Game()
 
 
 
